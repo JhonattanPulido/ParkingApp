@@ -3,8 +3,10 @@ using AutoMapper;
 using Models;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using System.Text.RegularExpressions;
 using Utilitaries.DTO;
 using Utilitaries.DTO.Pager;
+using Utilitaries.Enums;
 using Utilitaries.Exceptions;
 
 namespace Services
@@ -35,6 +37,19 @@ namespace Services
         /// <param name="log">Parking log data</param>
         public async Task Create(LogDTO log)
         {
+            // Verify number plate by vehicle type
+            Match match = log.Vehicle!.Type!.Id switch
+            {
+                (byte)VehicleTypesEnum.Bicycle => Regex.Match(log.Vehicle.NumberPlate!, "[0-9]{6}"),
+                (byte)VehicleTypesEnum.Motorcycle => Regex.Match(log.Vehicle.NumberPlate!, "[A-Z]{3}[0-9]{2}[A-Z]{1}"),
+                (byte)VehicleTypesEnum.Car => Regex.Match(log.Vehicle.NumberPlate!, "[A-Z]{3}[0-9]{3}"),
+                _ => throw new CustomBadRequestException("The vehicle type is not correct")
+            };
+
+            // Verify if regular expression is OK
+            if (!match.Success)
+                throw new CustomBadRequestException("The number plate is not correct for the vehicle type");                
+
             // Map log DTO to Log entity
             Log logData = Mapper.Map<Log>(log);
 
