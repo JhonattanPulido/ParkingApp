@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+profile.arm.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -31,6 +32,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+.idea/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -301,7 +303,7 @@ node_modules/
 *.dsw
 *.dsp
 
-# Visual Studio 6 technical files
+# Visual Studio 6 technical files 
 *.ncb
 *.aps
 
@@ -396,3 +398,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#Publish profile
+*.arm.json
