@@ -44,16 +44,16 @@ namespace Repositories
                 );
 
         /// <summary>
-        /// Get log by Id
+        /// Get log by number plate
         /// </summary>
-        /// <param name="id">Parking log ID</param>
+        /// <param name="numberPlate">Vehicle number plate</param>
         /// <returns>Log information</returns>
-        public async Task<Log?> Get(string id) =>
+        public async Task<Log?> Get(string numberPlate) =>
             await SqlConnection.QuerySingleOrDefaultAsync<Log?>(
                 "[dbo].[GetLog]",
                 new
                 {
-                    ID = id,
+                    NUMBER_PLATE = numberPlate,
                 },
                 commandType: CommandType.StoredProcedure
                 );
@@ -97,6 +97,7 @@ namespace Repositories
                     NUMBER_PLATE = log.Vehicle?.NumberPlate,
                     DEPARTURE = log.Departure,
                     PRICE = log.Price,
+                    TIME = log.Time,
                     BILL_DISCOUNT_NUMBER = log.BillDiscountNumber
                 },
                 commandType: CommandType.StoredProcedure

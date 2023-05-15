@@ -16,8 +16,10 @@ namespace Models.Mapper
         {
             // Vehicle type DTO -> Vehicle type mapping definition
             CreateMap<VehicleTypeDTO, VehicleType>()
-                .ForMember(d => d.Id, o => o.MapFrom(x => x.Id)).ReverseMap()
-                .ForMember(d => d.Name, o => o.MapFrom(x => x.Name)).ReverseMap();
+                .ForMember(d => d.Id, o => o.MapFrom(x => x.Id))
+                .ForMember(d => d.Name, o => o.MapFrom(x => x.Name))
+                .ForMember(d => d.Cost, o => o.MapFrom(x => x.Cost))
+                .ReverseMap();
         }
     }
 }

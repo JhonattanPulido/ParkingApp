@@ -1,5 +1,6 @@
 ﻿// Libraries
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Utilitaries.DTO
 {
@@ -24,6 +25,12 @@ namespace Utilitaries.DTO
         [MinLength(2, ErrorMessage = "Vehicle type name must be at least 2 characters long")]
         [MaxLength(32, ErrorMessage = "Vehicle type name must be a maximum 32 characters")]
         public string? Name { get; set; }
+
+        /// <summary>
+        /// Vehicle type cost
+        /// </summary>
+        [JsonIgnore]
+        public float? Cost { get; set; }
 
         /// <summary>
         /// Constructor

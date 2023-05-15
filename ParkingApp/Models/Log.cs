@@ -32,6 +32,11 @@ namespace Models
         public float? Price { get; set; }
 
         /// <summary>
+        /// Parking spent time
+        /// </summary>
+        public string? Time { get; set; }
+
+        /// <summary>
         /// Bill discount number
         /// </summary>
         public string? BillDiscountNumber { get; set; }

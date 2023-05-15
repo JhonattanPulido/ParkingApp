@@ -16,8 +16,9 @@ namespace Models.Mapper
         {
             // Vehicle DTO -> Vehicle mapping definition (with reverse mapping)
             CreateMap<VehicleDTO, Vehicle>()
-                .ForMember(d => d.NumberPlate, o => o.MapFrom(x => x.NumberPlate)).ReverseMap()
-                .ForMember(d => d.Type, o => o.MapFrom(x => x.Type)).ReverseMap();
+                .ForMember(d => d.NumberPlate, o => o.MapFrom(x => x.NumberPlate))
+                .ForMember(d => d.Type, o => o.MapFrom(x => x.Type))
+                .ReverseMap();
         }
     }
 }

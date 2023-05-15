@@ -79,16 +79,13 @@ namespace Services
         /// <summary>
         /// Update parking log
         /// </summary>
-        /// <param name="log">Parking log data</param>
-        /// <returns>Update status</returns>
-        public async Task Update(string id, DateTime departure, string? billDiscountNumber)
+        /// <param name="numberPlate">Vehicle number plate</param>
+        /// <param name="departure">Vehicle departure date and time</param>
+        /// <param name="billDiscountNumber">Supermarket bill discount number</param>
+        public async Task Update(string numberPlate, DateTime departure, string? billDiscountNumber)
         {
             // Get parking log data
-            Log? logData = await LogRepository.Get(id);
-
-            // Verify if log exists
-            if (logData is null)
-                throw new CustomNotFoundException("Parking log not found");
+            Log? logData = await LogRepository.Get(numberPlate) ?? throw new CustomNotFoundException("Parking log not found");
 
             // Map log to LogDTO
             LogDTO log = Mapper.Map<LogDTO>(logData);
@@ -100,20 +97,41 @@ namespace Services
             // Subtract departure and entry date
             TimeSpan dateDiff = departure.Subtract(log.Entry.Value);
 
+            // Set spend minutes
+            double totalMinutes = Math.Ceiling(dateDiff.TotalMinutes);
+
             // Calculate price (Minutes * Vehicle type cost)
-            float price = (float)(dateDiff.Minutes * logData!.Vehicle!.Type!.Cost!);
+            float price = (float)(totalMinutes * log.Vehicle!.Type!.Cost!);
 
             // If bill discount number is not null apply discount
             if (billDiscountNumber is not null)
                 price -= (float)(price * 0.3);
 
             // Set log data to update
+            logData.Vehicle = Mapper.Map<Vehicle>(log.Vehicle);
             logData.Departure = departure;
             logData.Price = price;
             logData.BillDiscountNumber = billDiscountNumber;
+            logData.Time = GetSpentTime(ref dateDiff);
 
             // Update parking log
             string status = await LogRepository.Update(logData);
+
+            // Verify response status code
+            if (status.Equals("01"))
+                throw new CustomNotFoundException("Vehicle not found");
+            else if (status.Equals("02"))
+                throw new CustomNotFoundException("Parking log not found");
+        }
+
+        private static string GetSpentTime(ref TimeSpan time)
+        {
+            string result = $"{time.Hours}h {time.Minutes}m";
+
+            if (time.Days > 0)
+                result = $"{time.Days}d " + result;
+
+            return result;
         }
     }
 }

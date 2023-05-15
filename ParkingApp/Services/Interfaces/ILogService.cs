@@ -27,8 +27,9 @@ namespace Services.Interfaces
         /// <summary>
         /// Update parking log
         /// </summary>
-        /// <param name="log">Parking log data</param>
-        /// <returns>Update status</returns>
-        public Task Update(string id, DateTime departure, string? billDiscountNumber);
+        /// <param name="numberPlate">Vehicle number plate</param>
+        /// <param name="departure">Vehicle departure date and time</param>
+        /// <param name="billDiscountNumber">Supermarket bill discount number</param>
+        public Task Update(string numberPlate, DateTime departure, string? billDiscountNumber);
     }
 }

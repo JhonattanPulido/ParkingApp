@@ -58,13 +58,14 @@ namespace WebAPI.Controllers
         /// <returns>200 - OK</returns>
         [HttpPut]
         public async Task<ActionResult> Update(
-            [Required(ErrorMessage = "Parking log ID is required")]
-            [StringLength(36, MinimumLength = 36, ErrorMessage = "Parking log ID must have 36 characters")] string id,
+            [Required(ErrorMessage = "Vehicle number plate is required")]
+            [StringLength(6, MinimumLength = 6, ErrorMessage = "Vehicle number plate must have 6 characters")]
+            [RegularExpression("[A-Z0-9]*", ErrorMessage = "Vehicle number plate must have only uppercase letters and/or numbers")] string numberPlate,
             [Required(ErrorMessage = "Departure date is required")] DateTime departure,
             [StringLength(8, MinimumLength = 8, ErrorMessage = "Bill discount number must have 8 numbers")]
             [RegularExpression("[0-9]*", ErrorMessage = "Bill discount number must have only numbers")] string? billDiscountNumber)
         {
-            await LogService.Update(id, departure, billDiscountNumber);
+            await LogService.Update(numberPlate, departure, billDiscountNumber);
             return StatusCode(StatusCodes.Status200OK, new { message = "Parking log updated successfully" });
         }
     }

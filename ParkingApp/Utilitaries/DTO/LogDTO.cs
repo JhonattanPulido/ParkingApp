@@ -32,8 +32,12 @@ namespace Utilitaries.DTO
         /// <summary>
         /// Parking total price
         /// </summary>
-        [JsonIgnore]
         public float? Price { get; set; }
+
+        /// <summary>
+        /// Parking spent time
+        /// </summary>
+        public string? Time { get; set; }
 
         /// <summary>
         /// Bull discount number
