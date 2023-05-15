@@ -29,6 +29,6 @@ namespace Services.Interfaces
         /// </summary>
         /// <param name="log">Parking log data</param>
         /// <returns>Update status</returns>
-        public Task Update(LogDTO log);
+        public Task Update(string id, DateTime departure, string? billDiscountNumber);
     }
 }

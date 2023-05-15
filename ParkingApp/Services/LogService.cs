@@ -5,6 +5,7 @@ using Repositories.Interfaces;
 using Services.Interfaces;
 using Utilitaries.DTO;
 using Utilitaries.DTO.Pager;
+using Utilitaries.Exceptions;
 
 namespace Services
 {
@@ -56,8 +57,7 @@ namespace Services
 
             // Set pager data
             PagerOutputDTO<LogDTO> pagerData = new(logs, pager.TotalItems, pagerInput.ItemsCount);
-
-            // DONE;
+            
             return pagerData;
         }
 
@@ -66,9 +66,39 @@ namespace Services
         /// </summary>
         /// <param name="log">Parking log data</param>
         /// <returns>Update status</returns>
-        public async Task Update(LogDTO log)
+        public async Task Update(string id, DateTime departure, string? billDiscountNumber)
         {
-            
+            // Get parking log data
+            Log? logData = await LogRepository.Get(id);
+
+            // Verify if log exists
+            if (logData is null)
+                throw new CustomNotFoundException("Parking log not found");
+
+            // Map log to LogDTO
+            LogDTO log = Mapper.Map<LogDTO>(logData);
+
+            // Verify entry and departure dates and times
+            if (log.Entry is null || log.Entry > departure)
+                throw new CustomBadRequestException("Entry date is greater than departure date");
+
+            // Subtract departure and entry date
+            TimeSpan dateDiff = departure.Subtract(log.Entry.Value);
+
+            // Calculate price (Minutes * Vehicle type cost)
+            float price = (float)(dateDiff.Minutes * logData!.Vehicle!.Type!.Cost!);
+
+            // If bill discount number is not null apply discount
+            if (billDiscountNumber is not null)
+                price -= (float)(price * 0.3);
+
+            // Set log data to update
+            logData.Departure = departure;
+            logData.Price = price;
+            logData.BillDiscountNumber = billDiscountNumber;
+
+            // Update parking log
+            string status = await LogRepository.Update(logData);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Libraries
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using Utilitaries.DTO;
 using Utilitaries.DTO.Pager;
 
@@ -56,9 +57,14 @@ namespace WebAPI.Controllers
         /// <param name="log">Log data</param>
         /// <returns>200 - OK</returns>
         [HttpPut]
-        public async Task<ActionResult> Update([FromBody] LogDTO log)
+        public async Task<ActionResult> Update(
+            [Required(ErrorMessage = "Parking log ID is required")]
+            [StringLength(36, MinimumLength = 36, ErrorMessage = "Parking log ID must have 36 characters")] string id,
+            [Required(ErrorMessage = "Departure date is required")] DateTime departure,
+            [StringLength(8, MinimumLength = 8, ErrorMessage = "Bill discount number must have 8 numbers")]
+            [RegularExpression("[0-9]*", ErrorMessage = "Bill discount number must have only numbers")] string? billDiscountNumber)
         {
-            await LogService.Update(log);
+            await LogService.Update(id, departure, billDiscountNumber);
             return StatusCode(StatusCodes.Status200OK, new { message = "Parking log updated successfully" });
         }
     }

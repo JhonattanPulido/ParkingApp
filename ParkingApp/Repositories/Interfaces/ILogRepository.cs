@@ -18,6 +18,13 @@ namespace Repositories.Interfaces
         public Task Create(Log log);
 
         /// <summary>
+        /// Get log by Id
+        /// </summary>
+        /// <param name="id">Parking log ID</param>
+        /// <returns>Log information</returns>
+        public Task<Log?> Get(string id);
+
+        /// <summary>
         /// Get paginated logs
         /// </summary>
         /// <param name="pagerInput">Pager input data</param>

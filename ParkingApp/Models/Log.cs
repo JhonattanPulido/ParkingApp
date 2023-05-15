@@ -14,7 +14,7 @@ namespace Models
         /// <summary>
         /// Log ID
         /// </summary>
-        public Guid? Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Vehicle entry date and time
@@ -42,7 +42,7 @@ namespace Models
         public Vehicle? Vehicle { get; set; }
 
         /// <summary>
-        /// Asociated vehicle as JSON
+        /// Associated vehicle as JSON
         /// </summary>
         [JsonIgnore]
         public string? VehicleJSON { get; set; }

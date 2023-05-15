@@ -41,7 +41,22 @@ namespace Repositories
                     VEHICLE_TYPE_ID = log.Vehicle?.Type?.Id
                 },
                 commandType: CommandType.StoredProcedure
-            );
+                );
+
+        /// <summary>
+        /// Get log by Id
+        /// </summary>
+        /// <param name="id">Parking log ID</param>
+        /// <returns>Log information</returns>
+        public async Task<Log?> Get(string id) =>
+            await SqlConnection.QuerySingleOrDefaultAsync<Log?>(
+                "[dbo].[GetLog]",
+                new
+                {
+                    ID = id,
+                },
+                commandType: CommandType.StoredProcedure
+                );
 
         /// <summary>
         /// Get paginated logs
@@ -60,7 +75,7 @@ namespace Repositories
                     ITEMS_COUNT = pagerInput.ItemsCount
                 },
                 commandType: CommandType.StoredProcedure
-            );
+                );
 
             List<Log> logs = gridReader.Read<Log>().ToList();
             int totalItems = await gridReader.ReadSingleAsync<int>();
@@ -85,6 +100,6 @@ namespace Repositories
                     BILL_DISCOUNT_NUMBER = log.BillDiscountNumber
                 },
                 commandType: CommandType.StoredProcedure
-            );
+                );
     }
 }
