@@ -5,7 +5,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SqlServerConnectionString": "Data Source=mssql-125923-0.cloudclusters.net,18832;Initial Catalog=parking_db;User ID=sqladmin;Password=hl*9lpA9n0xp;Encrypt=True;TrustServerCertificate=True"
+        "SqlServerConnectionString": "Data Source=mssql-127111-0.cloudclusters.net,17926;Initial Catalog=parking_db;User ID=sqladmin;Password=uF0&9j9sw$0D;Encrypt=True;TrustServerCertificate=True"
       },
       "applicationUrl": "https://localhost:50500;http://localhost:50501"
     }
